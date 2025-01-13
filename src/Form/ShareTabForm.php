@@ -22,11 +22,11 @@ class ShareTabForm extends EntityForm {
     
     // $share_tab = $this->entity;
 
-    /** @var \Drupal\share_tabs\Entity\ShareTab */
     if (!$share_tab = $form_state->get('share_tab')) {
       $share_tab = $this->entity;
       $form_state->set('share_tab', $share_tab);
     }
+    /** @var \Drupal\share_tabs\Entity\ShareTab $share_tab */
 
     $form_state->set('share_tab', $share_tab);
     $form['label'] = [
@@ -115,6 +115,8 @@ class ShareTabForm extends EntityForm {
       $form['tabs'][$key] = $tab_form;
 
       $tab_number++;
+
+      $tab_options[$key] = $tab['title'];
     }
 
     $form['add_tab'] = [
@@ -123,7 +125,7 @@ class ShareTabForm extends EntityForm {
       '#limit_validation_errors' => [],
       '#ajax' => [
         'callback' => '::addTabCallback', // AJAX callback method.
-        'wrapper' => 'tabs-wrapper', // ID of the container to update.
+        'wrapper' => $form['#attributes']['id'],
         'event' => 'click', // The event triggering the AJAX request.
       ],
       '#submit' => [[static::class, 'addTabSubmit']],
@@ -168,6 +170,14 @@ class ShareTabForm extends EntityForm {
       ];
     }
 
+    $form['default_tab'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Default Tab'),
+      '#options' => $tab_options,
+      '#default_value' => $share_tab->getDefaultTab(),
+      '#description' => $this->t('Select a tab that to be open by default.'),
+    ];
+
     return $form;
   }
 
@@ -182,7 +192,7 @@ class ShareTabForm extends EntityForm {
    * AJAX callback method.
    */
   public function addTabCallback(array &$form, FormStateInterface $form_state) {
-    return $form['tabs'];
+    return $form;
   }
 
   /**

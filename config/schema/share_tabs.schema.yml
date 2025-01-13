@@ -33,4 +33,7 @@ share_tabs.share_tab:
               id:
                 type: string
                 label: 'Entity ID'
+    default_tab:
+      type: string
+      label: 'Default Tab'
           
