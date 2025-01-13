@@ -33,6 +33,16 @@ share_tabs.share_tab:
               id:
                 type: string
                 label: 'Entity ID'
+          name:
+            type: mapping
+            label: 'Name'
+            mapping:
+              autogenerate:
+                type: boolean
+                label: 'Autogenerate'
+              custom:
+                type: string
+                label: 'Custom Name'
     default_tab:
       type: string
       label: 'Default Tab'

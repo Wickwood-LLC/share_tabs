@@ -103,6 +103,10 @@ class ShareTab extends ConfigEntityBase {
       'entity' => [
         'type' => 'node',
         'id' => NULL,
+      ],
+      'name' => [
+        'autogenerate' => TRUE,
+        'custom' => '',
       ]
     ];
   }

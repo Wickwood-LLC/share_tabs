@@ -27,10 +27,17 @@ function template_preprocess_share_tabs(&$variables) {
   $tabs = [];
   $active_tab_set = FALSE;
   foreach ($share_tab->getTabs() as $key => $tab) {
+    if ($tab['name']['autogenerate']) {
+      $name = preg_replace('/[^a-zA-Z0-9\']/', '_', $tab['title']);
+    }
+    else {
+      $name = $tab['name']['custom'];
+    }
+
     $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
     $entity = $entity_storage->load($tab['entity']['id']);
 
-    $anchor = 'st-' . $key;
+    $anchor = 'st-' . $name;
     $tab_link_attributes = new Attribute();
     $tab_link_attributes['class'] = ['tablink'];
     if ($share_method == ShareTab::SHARE_METHOD_HASH) {
@@ -42,17 +49,19 @@ function template_preprocess_share_tabs(&$variables) {
       }
     }
 
-    if ($share_method == ShareTab::SHARE_METHOD_QUERY && $query_param == $key) {
+    if ($share_method == ShareTab::SHARE_METHOD_QUERY && $query_param == $name) {
       $tab_link_attributes->addClass('active-tab');
       $active_tab_set = TRUE;
     }
 
     $tab_link_attributes['data-tab-key'] = $key;
+    $tab_link_attributes['data-tab-name'] = $name;
 
     $content_attributes = new Attribute();
     $content_attributes['class'] = ['tab-content'];
     $content_attributes['id'] = $anchor;
     $content_attributes['data-tab-key'] = $key;
+    $content_attributes['data-tab-name'] = $name;
 
     if (!$tab_link_attributes->hasClass('active-tab')) {
       $content_attributes['style'] = 'display: none';
@@ -60,6 +69,7 @@ function template_preprocess_share_tabs(&$variables) {
 
     $tabs[$key] = [
       'key' => $key,
+      'name' => $name,
       'title' => $tab['title'],
       'link_attributes' => $tab_link_attributes,
       'content' => \Drupal::entityTypeManager()

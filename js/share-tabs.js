@@ -2,17 +2,17 @@
   function clickShareTab($tab) {
     // console.log('clicked');
     // var $this = $(this);
-    var key = $tab.attr('data-tab-key');
+    var name = $tab.attr('data-tab-name');
     var $share_tabs = $tab.closest('.share-tabs');
     $('.tablink', $share_tabs).removeClass('active-tab');
     $tab.addClass('active-tab');
     $('.tab-content', $share_tabs).hide();
-    $('.tab-content[data-tab-key="' + key + '"]', $share_tabs).show();
+    $('.tab-content[data-tab-name="' + name + '"]', $share_tabs).show();
     var share_method = $share_tabs.attr('data-share-method');
     var query_param_name = $share_tabs.attr('data-query-param-name');
     if (share_method == 'query_param') {
       const url = new URL(location);
-      url.searchParams.set(query_param_name, key);
+      url.searchParams.set(query_param_name, name);
       history.pushState({}, "", url);
     }
   }
@@ -25,8 +25,8 @@
         if (share_method == 'hash') {
           $tabs = $('.tablink', this).each(function () {
             $tab = $(this);
-            var key = $(this).attr('data-tab-key');
-            if (hash == 'st-' + key) {
+            var name = $(this).attr('data-tab-name');
+            if (hash == 'st-' + name) {
               clickShareTab($tab);
             }
           })

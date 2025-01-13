@@ -98,6 +98,29 @@ class ShareTabForm extends EntityForm {
         '#required' => TRUE,
       ];
 
+      $tab_form['name'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Name'),
+      ];
+      $tab_form['name']['autogenerate'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Autogenerate'),
+        '#default_value' => $tab['name']['autogenerate'],
+        '#description' => $this->t('Autogenerate a name for this tab using the title set above. Name will be used to identify the tab in URLs.'),
+      ];
+
+      $tab_form['name']['custom'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Custom Name'),
+        '#default_value' => $tab['name']['custom'],
+        '#description' => $this->t('Manually set a custom name. Only alphanumeric characters and hyphens are allowed.'),
+        '#states' => [
+        'invisible' => [
+          ':input[name="tabs[' . $key . '][name][autogenerate]"]' => ['checked' => TRUE],
+        ],
+      ],
+      ];
+
       $tab_form['remove'] = [
         '#type' => 'submit',
         '#value' => $this->t('Remove'),
@@ -269,6 +292,9 @@ class ShareTabForm extends EntityForm {
       $entity = $entity_storage->load($tab['entity']['id']);
       if (!$entity) {
         $form_state->setErrorByName('tabs][' . $key . '][entity][id', $this->t('Entity does not exist!'));
+      }
+      if (!$tab['name']['autogenerate'] && !preg_match('/^[\w\-]+$/', $tab['name']['custom'])) {
+        $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Only alphanumeric characters are allowed!'));
       }
     }
     if (!preg_match('/^[\w\-]+$/', $form_state->getValue('query_param_name'))) {
