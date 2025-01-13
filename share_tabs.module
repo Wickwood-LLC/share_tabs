@@ -33,10 +33,12 @@ function template_preprocess_share_tabs(&$variables) {
     $tab_link_attributes = new Attribute();
     $tab_link_attributes['class'] = ['tablink'];
     if ($share_method == ShareTab::SHARE_METHOD_HASH) {
-      $tab_link_attributes['href'] = '#' + $anchor;
+      $tab_link_attributes['href'] = '#' . $anchor;
     }
     else {
-      $tab_link_attributes['href'] = '#';
+      if ($share_tab->getEmptyHash()) {
+        $tab_link_attributes['href'] = '#';
+      }
     }
 
     if ($share_method == ShareTab::SHARE_METHOD_QUERY && $query_param == $key) {
@@ -67,10 +69,11 @@ function template_preprocess_share_tabs(&$variables) {
   }
 
   if (!$active_tab_set) {
-    foreach ($tabs as &$tab)
-    if ($share_tab->getDefaultTab() == $tab['key']) {
-      $tab['link_attributes']->addClass('active-tab');
-      $tab['link_attributes']['style'] = '';
+    foreach ($tabs as &$tab) {
+      if ($share_tab->getDefaultTab() == $tab['key']) {
+        $tab['link_attributes']->addClass('active-tab');
+        $tab['content_attributes']['style'] = '';
+      }
     }
   }
 
