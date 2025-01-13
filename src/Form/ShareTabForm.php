@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\share_tabs\Entity\ShareTab;
 
 /**
  * Form for adding and editing ShareTab entities.
@@ -176,6 +177,17 @@ class ShareTabForm extends EntityForm {
       '#options' => $tab_options,
       '#default_value' => $share_tab->getDefaultTab(),
       '#description' => $this->t('Select a tab that to be open by default.'),
+    ];
+
+    $form['share_method'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Share Method'),
+      '#options' => [
+        ShareTab::SHARE_METHOD_HASH => 'Hash',
+        ShareTab::SHARE_METHOD_QUERY => 'Query Parameter',
+      ],
+      '#default_value' => $share_tab->getShareMethod(),
+      '#description' => $this->t('Select a way to set the share method. This decides how infomation about the active tab appear in the URL. `Hash` will causet to make URL like [url]+#[tab-key].  `Query Param` will add a URL query parameter.'),
     ];
 
     return $form;

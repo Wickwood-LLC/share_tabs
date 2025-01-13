@@ -35,10 +35,13 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "label",
  *     "tabs",
  *     "default_tab",
+ *     "share_method",
  *   }
  * )
  */
 class ShareTab extends ConfigEntityBase {
+  const SHARE_METHOD_HASH = 'hash';
+  const SHARE_METHOD_QUERY = 'query_param';
   /**
    * The unique ID of the entity.
    *
@@ -53,6 +56,11 @@ class ShareTab extends ConfigEntityBase {
    */
   protected $label;
 
+  /**
+   * Tab details
+   *
+   * @var array
+   */
   protected $tabs;
 
   /**
@@ -61,6 +69,13 @@ class ShareTab extends ConfigEntityBase {
    * @var string
    */
   protected $default_tab;
+
+  /**
+   * Share method
+   *
+   * @var string
+   */
+  protected $share_method;
   
 
   public function addTab() {
@@ -92,5 +107,9 @@ class ShareTab extends ConfigEntityBase {
 
   public function getDefaultTab() {
     return $this->default_tab;
+  }
+
+  public function getShareMethod() {
+    return $this->share_method;
   }
 }

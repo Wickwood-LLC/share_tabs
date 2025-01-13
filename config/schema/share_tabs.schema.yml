@@ -36,4 +36,7 @@ share_tabs.share_tab:
     default_tab:
       type: string
       label: 'Default Tab'
+    share_method:
+      type: string
+      label: 'Share Method'
           
