@@ -79,6 +79,30 @@ class ShareTabForm extends EntityForm {
         '#default_value' => $tab['title'],
         '#required' => TRUE,
       ];
+
+      $tab_form['name'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Name'),
+      ];
+      $tab_form['name']['autogenerate'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Autogenerate'),
+        '#default_value' => $tab['name']['autogenerate'],
+        '#description' => $this->t('Autogenerate a name for this tab using the title set above. Name will be used to identify the tab in URLs.'),
+      ];
+
+      $tab_form['name']['custom'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Custom Name'),
+        '#default_value' => $tab['name']['custom'],
+        '#description' => $this->t('Manually set a custom name. Only alphanumeric characters and hyphens are allowed.'),
+        '#states' => [
+          'invisible' => [
+            ':input[name="tabs[' . $key . '][name][autogenerate]"]' => ['checked' => TRUE],
+          ],
+        ],
+      ];
+
       $tab_form['entity'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Entity'),
@@ -108,29 +132,6 @@ class ShareTabForm extends EntityForm {
         '#options' => static::getViewModeOptions($tab['entity']['type']),
         '#default_value' => $tab['entity']['view_mode'] ?? '',
         '#required' => TRUE,
-      ];
-
-      $tab_form['name'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Name'),
-      ];
-      $tab_form['name']['autogenerate'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Autogenerate'),
-        '#default_value' => $tab['name']['autogenerate'],
-        '#description' => $this->t('Autogenerate a name for this tab using the title set above. Name will be used to identify the tab in URLs.'),
-      ];
-
-      $tab_form['name']['custom'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Custom Name'),
-        '#default_value' => $tab['name']['custom'],
-        '#description' => $this->t('Manually set a custom name. Only alphanumeric characters and hyphens are allowed.'),
-        '#states' => [
-          'invisible' => [
-            ':input[name="tabs[' . $key . '][name][autogenerate]"]' => ['checked' => TRUE],
-          ],
-        ],
       ];
 
       $tab_form['remove'] = [
