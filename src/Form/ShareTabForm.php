@@ -127,10 +127,10 @@ class ShareTabForm extends EntityForm {
         '#default_value' => $tab['name']['custom'],
         '#description' => $this->t('Manually set a custom name. Only alphanumeric characters and hyphens are allowed.'),
         '#states' => [
-        'invisible' => [
-          ':input[name="tabs[' . $key . '][name][autogenerate]"]' => ['checked' => TRUE],
+          'invisible' => [
+            ':input[name="tabs[' . $key . '][name][autogenerate]"]' => ['checked' => TRUE],
+          ],
         ],
-      ],
       ];
 
       $tab_form['remove'] = [
