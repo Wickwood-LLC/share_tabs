@@ -67,6 +67,8 @@ function template_preprocess_share_tabs(&$variables) {
       $content_attributes['style'] = 'display: none';
     }
 
+    $view_mode = !empty($tab['entity']['view_mode']) ? $tab['entity']['view_mode'] : 'full';
+
     $tabs[$key] = [
       'key' => $key,
       'name' => $name,
@@ -74,7 +76,7 @@ function template_preprocess_share_tabs(&$variables) {
       'link_attributes' => $tab_link_attributes,
       'content' => \Drupal::entityTypeManager()
         ->getViewBuilder($tab['entity']['type'])
-        ->view($entity, 'full'),
+        ->view($entity, $view_mode),
       'content_attributes' => $content_attributes,
     ];
   }

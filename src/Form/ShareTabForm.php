@@ -90,11 +90,23 @@ class ShareTabForm extends EntityForm {
         '#options' => $content_entity_types,
         '#default_value' => $tab['entity']['type'],
         '#required' => TRUE,
+        '#ajax' => [
+          'callback' => '::addTabCallback',
+          'wrapper' => $form['#attributes']['id'],
+          // 'effect' => 'fade',
+        ],
       ];
       $tab_form['entity']['id'] = [
         '#type' => 'textfield',
         '#title' => $this->t('ID'),
         '#default_value' => $tab['entity']['id'],
+        '#required' => TRUE,
+      ];
+      $tab_form['entity']['view_mode'] = [
+        '#type' => 'select',
+        '#title' => $this->t('View Mode'),
+        '#options' => static::getViewModeOptions($tab['entity']['type']),
+        '#default_value' => $tab['entity']['view_mode'] ?? '',
         '#required' => TRUE,
       ];
 
@@ -356,5 +368,34 @@ class ShareTabForm extends EntityForm {
     }
 
     return $content_entity_types;
+  }
+
+  /**
+   * Get a list of view modes for a specific entity type.
+   *
+   * @param string $entity_type
+   *   The entity type ID (e.g., 'node', 'user', 'taxonomy_term').
+   *
+   * @return array
+   *   An array of view modes with machine names as keys and labels as values.
+   */
+  public static function getViewModeOptions(string $entity_type) {
+    static $view_modes = [];
+    if (!isset($view_modes[$entity_type])) {
+      // Get the entity display repository service.
+      $entity_display_repository = \Drupal::service('entity_display.repository');
+
+      // Retrieve all view modes for the entity type.
+      $entity_view_modes = $entity_display_repository->getViewModes($entity_type);
+
+      // Extract machine names and labels.
+      $view_modes_list = [];
+      foreach ($entity_view_modes as $machine_name => $view_mode) {
+        $view_modes_list[$machine_name] = $view_mode['label'];
+      }
+      $view_modes[$entity_type] = $view_modes_list;
+    }
+
+    return $view_modes[$entity_type];
   }
 }

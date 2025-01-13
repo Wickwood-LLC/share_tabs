@@ -33,6 +33,9 @@ share_tabs.share_tab:
               id:
                 type: string
                 label: 'Entity ID'
+              view_mode:
+                type: string
+                label: 'View Mode'
           name:
             type: mapping
             label: 'Name'
