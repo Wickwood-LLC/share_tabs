@@ -8,7 +8,7 @@ use Drupal\share_tabs\Entity\ShareTab;
  */
 function share_tabs_theme($existing, $type, $theme, $path) {
   return [
-    'share_tab' => [
+    'share_tabs' => [
       'variables' => [
         'share_tab' => NULL,
       ],
@@ -16,7 +16,7 @@ function share_tabs_theme($existing, $type, $theme, $path) {
   ];
 }
 
-function template_preprocess_share_tab(&$variables) {
+function template_preprocess_share_tabs(&$variables) {
   /** @var \Drupal\share_tabs\Entity\ShareTab */
   $share_tab = $variables['share_tab'];
 

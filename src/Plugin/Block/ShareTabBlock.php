@@ -103,7 +103,7 @@ class ShareTabBlock extends BlockBase implements ContainerFactoryPluginInterface
   public function build() {
     $share_tab = $this->entityTypeManager->getStorage('share_tab')->load($this->configuration['share_tab']);
     return [
-      '#theme' => 'share_tab',
+      '#theme' => 'share_tabs',
       '#share_tab' => $share_tab,
       '#attached' => [
         'library' => [
