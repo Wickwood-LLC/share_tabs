@@ -305,8 +305,14 @@ class ShareTabForm extends EntityForm {
       if (!$entity) {
         $form_state->setErrorByName('tabs][' . $key . '][entity][id', $this->t('Entity does not exist!'));
       }
-      if (!$tab['name']['autogenerate'] && !preg_match('/^[\w\-]+$/', $tab['name']['custom'])) {
-        $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Only alphanumeric characters are allowed!'));
+      if (!$tab['name']['autogenerate']) {
+        $custom_name = trim($tab['name']['custom']);
+        if (empty(trim($custom_name))) {
+          $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Cannot be empty!'));
+        }
+        else if (!preg_match('/^[\w\-]+$/', $custom_name)) {
+          $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Only alphanumeric characters are allowed!'));
+        }
       }
     }
     if (!preg_match('/^[\w\-]+$/', $form_state->getValue('query_param_name'))) {
