@@ -34,6 +34,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "id",
  *     "label",
  *     "tabs",
+ *     "default_tab",
  *   }
  * )
  */
@@ -53,6 +54,14 @@ class ShareTab extends ConfigEntityBase {
   protected $label;
 
   protected $tabs;
+
+  /**
+   * Default tab
+   *
+   * @var string
+   */
+  protected $default_tab;
+  
 
   public function addTab() {
     if (!$this->tabs) {
@@ -79,5 +88,9 @@ class ShareTab extends ConfigEntityBase {
       $this->tabs = [];
     }
     return $this->tabs;
+  }
+
+  public function getDefaultTab() {
+    return $this->default_tab;
   }
 }
