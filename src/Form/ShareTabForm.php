@@ -202,6 +202,18 @@ class ShareTabForm extends EntityForm {
       ],
     ];
 
+    $form['query_param_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Query Parameter Name'),
+      '#default_value' => $share_tab->getQueryParamterName(),
+      '#description' => $this->t('Parameter name to be used for the query. It will be useful to avoid any conflict with any other possible query paramter, change this in that case. Otherwise leaeve as it is.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="share_method"]' => ['value' => ShareTab::SHARE_METHOD_QUERY],
+        ],
+      ],
+    ];
+
     return $form;
   }
 
@@ -272,6 +284,9 @@ class ShareTabForm extends EntityForm {
       if (!$entity) {
         $form_state->setErrorByName('tabs][' . $key . '][entity][id', $this->t('Entity does not exist!'));
       }
+    }
+    if (!preg_match('/^[\w\-]+$/', $form_state->getValue('query_param_name'))) {
+      $form_state->setErrorByName('query_param_name', $this->t('Only alphanumeric charactes and hyphens are allowed.'));
     }
   }
 

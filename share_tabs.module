@@ -21,7 +21,8 @@ function template_preprocess_share_tabs(&$variables) {
   $share_tab = $variables['share_tab'];
 
   $share_method = $share_tab->getShareMethod();
-  $query_param = Drupal::request()->query->get('st');
+  $query_param_name = $share_tab->getQueryParamterName();
+  $query_param = Drupal::request()->query->get($query_param_name);
 
   $tabs = [];
   $active_tab_set = FALSE;
@@ -79,6 +80,7 @@ function template_preprocess_share_tabs(&$variables) {
 
   $attributes = new Attribute();
   $attributes['data-share-method'] = $share_method;
+  $attributes['data-query-param-name'] = $query_param_name;
   $attributes->addClass('share-tabs');
   $variables['tabs'] = $tabs;
   $variables['attributes'] = $attributes;

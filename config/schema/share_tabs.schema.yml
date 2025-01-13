@@ -42,4 +42,7 @@ share_tabs.share_tab:
     empty_hash:
       type: boolean
       label: 'Empty Hash'
+    query_param_name:
+      type: string
+      label: 'Query Parameter Name'
           

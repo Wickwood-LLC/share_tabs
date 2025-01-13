@@ -37,6 +37,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "default_tab",
  *     "share_method",
  *     "empty_hash",
+ *     "query_param_name",
  *   }
  * )
  */
@@ -85,6 +86,13 @@ class ShareTab extends ConfigEntityBase {
    */
   protected $empty_hash = TRUE;
 
+  /**
+   * Query parameter name
+   *
+   * @var string
+   */
+  protected $query_param_name = 'stab';
+
   public function addTab() {
     if (!$this->tabs) {
       $this->tabs = [];
@@ -122,5 +130,9 @@ class ShareTab extends ConfigEntityBase {
 
   public function getEmptyHash() {
     return $this->empty_hash;
+  }
+
+  public function getQueryParamterName() {
+    return $this->query_param_name;
   }
 }

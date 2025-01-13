@@ -9,9 +9,10 @@
     $('.tab-content', $share_tabs).hide();
     $('.tab-content[data-tab-key="' + key + '"]', $share_tabs).show();
     var share_method = $share_tabs.attr('data-share-method');
+    var query_param_name = $share_tabs.attr('data-query-param-name');
     if (share_method == 'query_param') {
       const url = new URL(location);
-      url.searchParams.set("st", key);
+      url.searchParams.set(query_param_name, key);
       history.pushState({}, "", url);
     }
   }
