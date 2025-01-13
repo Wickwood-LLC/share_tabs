@@ -1,0 +1,17 @@
+.share-tabs .tabs {
+  padding-bottom: 0.5rem;
+}
+.share-tabs .tablink {
+  border: 1px darkgray solid;
+  background-color: lightgray;
+  padding: 0.5rem;
+}
+
+.share-tabs .tablink.active-tab {
+  border-color: black;
+  background-color: inherit;
+}
+
+.share-tabs .tab-contents {
+  border: 1px darkgray solid;
+}

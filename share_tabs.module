@@ -76,7 +76,7 @@ function template_preprocess_share_tabs(&$variables) {
 
   $attributes = new Attribute();
   $attributes['data-share-method'] = $share_method;
-  $attributes->addClass('share-tab');
+  $attributes->addClass('share-tabs');
   $variables['tabs'] = $tabs;
   $variables['attributes'] = $attributes;
 }
