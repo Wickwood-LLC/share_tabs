@@ -1,0 +1,7 @@
+share_tabs:
+  version: 1.0
+  js:
+    js/share-tabs.js: {}
+  dependencies:
+    - core/jquery
+  footer: true

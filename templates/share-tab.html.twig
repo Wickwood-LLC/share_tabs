@@ -1,0 +1,12 @@
+<div class="share-tab">
+  <div class="tabs">
+    {% for tab in tabs %}
+      <a {{ tab.link_attributes }}>{{ tab.title }}</a>
+    {% endfor %}
+  </div>
+  <div class="tab-contents">
+    {% for tab in tabs %}
+      <div {{ tab.content_attributes }}>{{ tab.content }}</div>
+    {% endfor %}
+  </div>
+</div>

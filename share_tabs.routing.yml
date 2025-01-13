@@ -1,0 +1,31 @@
+entity.share_tab.collection:
+  path: '/admin/structure/share-tabs'
+  defaults:
+    _entity_list: 'share_tab'
+    _title: 'Share Tabs'
+  requirements:
+    _permission: 'administer share tab'
+
+entity.share_tab.add_form:
+  path: '/admin/structure/share-tabs/add'
+  defaults:
+    _entity_form: 'share_tab.add'
+    _title: 'Add Share Tab'
+  requirements:
+    _permission: 'administer share tab'
+
+entity.share_tab.edit_form:
+  path: '/admin/structure/share-tabs/{share_tab}/edit'
+  defaults:
+    _entity_form: 'share_tab.edit'
+    _title: 'Edit Share Tab'
+  requirements:
+    _permission: 'administer share tab'
+
+entity.share_tab.delete_form:
+  path: '/admin/structure/share-tabs/{share_tab}/delete'
+  defaults:
+    _entity_form: 'share_tab.delete'
+    _title: 'Delete Share Tab'
+  requirements:
+    _permission: 'administer share tab'

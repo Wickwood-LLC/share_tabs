@@ -1,0 +1,36 @@
+share_tabs.share_tab:
+  type: config_entity
+  label: 'Share Tab'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+      description: 'The unique machine-readable ID of the entity.'
+    label:
+      type: string
+      label: 'Label'
+      description: 'The human-readable label of the entity.'
+    tabs:
+      type: sequence
+      label: Tabs
+      sequence:
+        type: mapping
+        label: 'Tab'
+        mapping:
+          title:
+            type: string
+            label: 'Title'
+          weight:
+            type: integer
+            label: 'Weight'
+          entity:
+            type: mapping
+            label: 'Entity'
+            mapping:
+              type: 
+                type: string
+                label: 'Entity Type'
+              id:
+                type: string
+                label: 'Entity ID'
+          

@@ -1,0 +1,5 @@
+entity.share_tab.collection:
+  title: 'Share Tabs'
+  route_name: entity.share_tab.collection
+  parent: system.admin_structure
+  description: 'Manage share tabs entities.'

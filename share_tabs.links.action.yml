@@ -1,0 +1,5 @@
+entity.share_tab.add_form:
+  route_name: entity.share_tab.add_form
+  title: 'Add Share Tab'
+  appears_on:
+    - entity.share_tab.collection

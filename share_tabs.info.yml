@@ -1,0 +1,4 @@
+name: Share Tabs
+type: module
+description: "Allow to create tabbed content and share link for any of the tabs. The page will load that specific tab opened by default."
+core_version_requirement: ^10.3
