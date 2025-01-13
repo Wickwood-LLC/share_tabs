@@ -24,15 +24,22 @@ function template_preprocess_share_tab(&$variables) {
     $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
     $entity = $entity_storage->load($tab['entity']['id']);
 
+    $anchor = '#st-' . $key;
     $tab_link_attributes = new Attribute();
     $tab_link_attributes['class'] = ['tablink'];
-    $tab_link_attributes['href'] = '#st' . $key;
+    $tab_link_attributes['href'] = $anchor;
     $tab_link_attributes['data-tab-key'] = $key;
 
     $content_attributes = new Attribute();
     $content_attributes['class'] = ['tab-content'];
-    $content_attributes['id'] = '#st' . $key;
+    $content_attributes['id'] = $anchor;
     $content_attributes['data-tab-key'] = $key;
+    if ($share_tab->getDefaultTab() == $key) {
+      $tab_link_attributes->addClass('active-tab');
+    }
+    else {
+      $content_attributes['style'] = 'display: none';
+    }
 
     $tabs[] = [
       'key' => $key,
