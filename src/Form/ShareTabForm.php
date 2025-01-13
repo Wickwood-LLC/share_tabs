@@ -20,8 +20,6 @@ class ShareTabForm extends EntityForm {
     $form = parent::form($form, $form_state);
 
     $form['#attributes']['id'] = 'share-tab-form-wrapper';
-    
-    // $share_tab = $this->entity;
 
     if (!$share_tab = $form_state->get('share_tab')) {
       $share_tab = $this->entity;
@@ -145,7 +143,6 @@ class ShareTabForm extends EntityForm {
           'group' => $group_class,
         ],
       ],
-      // '#tree' => FALSE,
       '#input' => FALSE,
       '#theme_wrappers' => ['form_element'],
     ];
@@ -232,17 +229,6 @@ class ShareTabForm extends EntityForm {
   }
 
   /**
-   * Ajax callback for the "Add another item" button.
-   *
-   * This returns the new page content to replace the page content made obsolete
-   * by the form submission.
-   */
-  // public static function ajaxCallback(array $form, FormStateInterface $form_state) {
-  //   // $button = $form_state->getTriggeringElement();
-  //   return $form['tabs'];
-  // }
-
-  /**
    * Submission handler for the "Add Tab" button.
    */
   public static function addTabSubmit(array $form, FormStateInterface $form_state) {
@@ -320,7 +306,6 @@ class ShareTabForm extends EntityForm {
     unset(
       $values['tab_order'],
     );
-    // unset($values['manager_settings']['notifications']['add_more']);
 
     $form_state->setValues($values);
     parent::copyFormValuesToEntity($entity, $form, $form_state);
