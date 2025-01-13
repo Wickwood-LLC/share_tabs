@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Core\Template\Attribute;
+use Drupal\share_tabs\Entity\ShareTab;
 
 /**
  * Implements hook_theme().
@@ -19,29 +20,42 @@ function template_preprocess_share_tab(&$variables) {
   /** @var \Drupal\share_tabs\Entity\ShareTab */
   $share_tab = $variables['share_tab'];
 
+  $share_method = $share_tab->getShareMethod();
+  $query_param = Drupal::request()->query->get('st');
+
   $tabs = [];
+  $active_tab_set = FALSE;
   foreach ($share_tab->getTabs() as $key => $tab) {
     $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
     $entity = $entity_storage->load($tab['entity']['id']);
 
-    $anchor = '#st-' . $key;
+    $anchor = 'st-' . $key;
     $tab_link_attributes = new Attribute();
     $tab_link_attributes['class'] = ['tablink'];
-    $tab_link_attributes['href'] = $anchor;
+    if ($share_method == ShareTab::SHARE_METHOD_HASH) {
+      $tab_link_attributes['href'] = '#' + $anchor;
+    }
+    else {
+      $tab_link_attributes['href'] = '#';
+    }
+
+    if ($share_method == ShareTab::SHARE_METHOD_QUERY && $query_param == $key) {
+      $tab_link_attributes->addClass('active-tab');
+      $active_tab_set = TRUE;
+    }
+
     $tab_link_attributes['data-tab-key'] = $key;
 
     $content_attributes = new Attribute();
     $content_attributes['class'] = ['tab-content'];
     $content_attributes['id'] = $anchor;
     $content_attributes['data-tab-key'] = $key;
-    if ($share_tab->getDefaultTab() == $key) {
-      $tab_link_attributes->addClass('active-tab');
-    }
-    else {
+
+    if (!$tab_link_attributes->hasClass('active-tab')) {
       $content_attributes['style'] = 'display: none';
     }
 
-    $tabs[] = [
+    $tabs[$key] = [
       'key' => $key,
       'title' => $tab['title'],
       'link_attributes' => $tab_link_attributes,
@@ -51,5 +65,18 @@ function template_preprocess_share_tab(&$variables) {
       'content_attributes' => $content_attributes,
     ];
   }
+
+  if (!$active_tab_set) {
+    foreach ($tabs as &$tab)
+    if ($share_tab->getDefaultTab() == $tab['key']) {
+      $tab['link_attributes']->addClass('active-tab');
+      $tab['link_attributes']['style'] = '';
+    }
+  }
+
+  $attributes = new Attribute();
+  $attributes['data-share-method'] = $share_method;
+  $attributes->addClass('share-tab');
   $variables['tabs'] = $tabs;
+  $variables['attributes'] = $attributes;
 }
