@@ -1,7 +1,5 @@
 (function ($, Drupal, once) {
   function clickShareTab($tab) {
-    // console.log('clicked');
-    // var $this = $(this);
     var name = $tab.attr('data-tab-name');
     var $share_tabs = $tab.closest('.share-tabs');
     $('.tablink', $share_tabs).removeClass('active-tab');
@@ -31,7 +29,6 @@
             }
           })
         }
-        // else if (share_method == 'query_param')
       });
       var $share_tabs_tabs = $('.share-tabs .tablink', context);
       $share_tabs_tabs.each(function() {
