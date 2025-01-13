@@ -39,4 +39,7 @@ share_tabs.share_tab:
     share_method:
       type: string
       label: 'Share Method'
+    empty_hash:
+      type: boolean
+      label: 'Empty Hash'
           

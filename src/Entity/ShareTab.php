@@ -36,6 +36,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "tabs",
  *     "default_tab",
  *     "share_method",
+ *     "empty_hash",
  *   }
  * )
  */
@@ -77,6 +78,12 @@ class ShareTab extends ConfigEntityBase {
    */
   protected $share_method;
   
+  /**
+   * Empty hash
+   *
+   * @var boolean
+   */
+  protected $empty_hash = TRUE;
 
   public function addTab() {
     if (!$this->tabs) {
@@ -111,5 +118,9 @@ class ShareTab extends ConfigEntityBase {
 
   public function getShareMethod() {
     return $this->share_method;
+  }
+
+  public function getEmptyHash() {
+    return $this->empty_hash;
   }
 }

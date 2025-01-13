@@ -190,6 +190,18 @@ class ShareTabForm extends EntityForm {
       '#description' => $this->t('Select a way to set the share method. This decides how infomation about the active tab appear in the URL. `Hash` will causet to make URL like [url]+#[tab-key].  `Query Param` will add a URL query parameter.'),
     ];
 
+    $form['empty_hash'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allow tabs to have empty hash'),
+      '#default_value' => $share_tab->getEmptyHash(),
+      '#description' => $this->t('Enabling this will leave tab anchor elements to have just `#` as `href` attribute value, which allows to make the anchor tags as links otherwise it will make it like simple span like tag.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="share_method"]' => ['value' => ShareTab::SHARE_METHOD_HASH],
+        ],
+      ],
+    ];
+
     return $form;
   }
 
