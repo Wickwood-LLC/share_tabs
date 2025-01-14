@@ -88,7 +88,7 @@ class ShareTab extends ConfigEntityBase {
    *
    * @var boolean
    */
-  protected $empty_hash = TRUE;
+  protected $empty_hash = FALSE;
 
   /**
    * Query parameter name
