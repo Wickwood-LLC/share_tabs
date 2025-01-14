@@ -33,6 +33,7 @@ class ShareTabsController extends ControllerBase {
       ->getViewBuilder($data['entity']['type'])
       ->view($entity, $view_mode)));
     $response->addCommand(new InvokeCommand($selector, 'attr', ['data-ajax-loaded', '1']));
+    $response->addCommand(new InvokeCommand($selector, 'attr', ['aria-busy', 'false']));
     return $response;
   }
 

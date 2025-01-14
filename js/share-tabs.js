@@ -17,6 +17,8 @@
     var ajax_load = $tab_content.attr('data-ajax');
     var ajax_loaded = $tab_content.attr('data-ajax-loaded');
     if (ajax_load == '1' && ajax_loaded == '0') {
+      $tab_content.attr('aria-busy', 'true');
+      $tab_content.html('<div class="ajax-progress ajax-progress-throbber">Loading ... <div class="throbber">&nbsp;</div></div>');
       Drupal.ajax({
         url: Drupal.url('ajax/share-tabs/tab-content'),
         type: 'POST',
