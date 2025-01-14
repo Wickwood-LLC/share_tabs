@@ -6,5 +6,5 @@ share_tabs:
   js:
     js/share-tabs.js: {}
   dependencies:
-    - core/jquery
+    - core/drupal.ajax
   footer: true
