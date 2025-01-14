@@ -154,4 +154,19 @@ class ShareTab extends ConfigEntityBase {
       $tab['name']['custom'] = trim($tab['name']['custom']);
     }
   }
+
+  public function renderTabContent($key) {
+    if (!empty($this->tabs[$key])) {
+      $tab = $this->tabs[$key];
+      $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
+      $entity = $entity_storage->load($tab['entity']['id']);
+      if ($entity->access('view')) {
+
+        $view_mode = !empty($tab['entity']['view_mode']) ? $tab['entity']['view_mode'] : 'full';
+        return \Drupal::entityTypeManager()
+          ->getViewBuilder($tab['entity']['type'])
+          ->view($entity, $view_mode);
+      }
+    }
+  }
 }

@@ -84,14 +84,7 @@ function template_preprocess_share_tabs(&$variables) {
     $content_attributes['data-ajax'] = $tab['ajax'];
 
     if (!isset($content)) {
-      if ($entity->access('view')) {
-        $content = \Drupal::entityTypeManager()
-        ->getViewBuilder($tab['entity']['type'])
-        ->view($entity, $view_mode);
-      }
-      else {
-        $content = t('Access Denied!');
-      }
+      $content = $share_tab->renderTabContent($key);
     }
     $tabs[$key] = [
       'key' => $key,
@@ -108,6 +101,9 @@ function template_preprocess_share_tabs(&$variables) {
       if ($share_tab->getDefaultTab() == $tab['key']) {
         $tab['link_attributes']->addClass('active-tab');
         $tab['content_attributes']['style'] = '';
+        if (empty($tab['content'])) {
+          $tab['content'] = $content = $share_tab->renderTabContent($tab['key']);
+        }
       }
     }
   }
