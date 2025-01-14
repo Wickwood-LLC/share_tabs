@@ -53,9 +53,14 @@ class ShareTabsController extends ControllerBase {
     // Get data from the POST request.
     $data = $request->request->all();
 
+    $selector = '#' . $data['tab_content_id'];
+
+    $response = new AjaxResponse();
     // Validate the required data.
     if (empty($data['entity']['type']) || empty($data['entity']['id']) || empty($data['tab_content_id'])) {
-      return new JsonResponse(['error' => 'Invalid request data.'], Response::HTTP_BAD_REQUEST);
+      // $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+      $response->addCommand(new HtmlCommand( $selector, $this->t('Invalid request data.')));
+      return $response;
     }
 
     // Load the entity.
@@ -63,13 +68,18 @@ class ShareTabsController extends ControllerBase {
     $entity = $entity_storage->load($data['entity']['id']);
 
     if (!$entity) {
-      return new JsonResponse(['error' => 'Entity not found.'], Response::HTTP_NOT_FOUND);
+      // $response->setStatusCode(Response::HTTP_NOT_FOUND);
+      $response->addCommand(new HtmlCommand( $selector, $this->t('Entity not found.')));
+      return $response;
+    }
+    else if (!$entity->access('view')) {
+      $response->addCommand(new HtmlCommand( $selector, $this->t('Access Denied.')));
+      // $response->setStatusCode(Response::HTTP_FORBIDDEN);
+      return $response;
     }
 
     $view_mode = !empty($data['entity']['view_mode']) ? $data['entity']['view_mode'] : 'full';
-    $selector = '#' . $data['tab_content_id'];
 
-    $response = new AjaxResponse();
     $response->addCommand(new HtmlCommand( $selector, $this->entityTypeManager()
       ->getViewBuilder($data['entity']['type'])
       ->view($entity, $view_mode)));

@@ -27,15 +27,20 @@ function template_preprocess_share_tabs(&$variables) {
   $tabs = [];
   $active_tab_set = FALSE;
   foreach ($share_tab->getTabs() as $key => $tab) {
+    $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
+    $entity = $entity_storage->load($tab['entity']['id']);
+
+    if (!$entity->access('view')) {
+      // Don't show this tab as user don't has access to view it.
+      continue;
+    }
+
     if ($tab['name']['autogenerate']) {
       $name = preg_replace('/[^a-zA-Z0-9\']/', '_', $tab['title']);
     }
     else {
       $name = $tab['name']['custom'];
     }
-
-    $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
-    $entity = $entity_storage->load($tab['entity']['id']);
 
     $anchor = 'st-' . $name;
     $tab_link_attributes = new Attribute();
@@ -79,9 +84,14 @@ function template_preprocess_share_tabs(&$variables) {
     $content_attributes['data-ajax'] = $tab['ajax'];
 
     if (!isset($content)) {
-      $content = \Drupal::entityTypeManager()
+      if ($entity->access('view')) {
+        $content = \Drupal::entityTypeManager()
         ->getViewBuilder($tab['entity']['type'])
         ->view($entity, $view_mode);
+      }
+      else {
+        $content = t('Access Denied!');
+      }
     }
     $tabs[$key] = [
       'key' => $key,
