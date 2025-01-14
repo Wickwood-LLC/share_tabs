@@ -134,6 +134,13 @@ class ShareTabForm extends EntityForm {
         '#required' => TRUE,
       ];
 
+      $tab_form['ajax'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Load by ajax'),
+        '#default_value' => $tab['ajax'],
+        '#description' => $this->t('The tab content will not be loaded until becoming the active tab.'),
+      ];
+
       $tab_form['remove'] = [
         '#type' => 'submit',
         '#value' => $this->t('Remove'),

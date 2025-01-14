@@ -46,6 +46,9 @@ share_tabs.share_tab:
               custom:
                 type: string
                 label: 'Custom Name'
+          ajax:
+            type: boolean
+            label: 'Ajax'
     default_tab:
       type: string
       label: 'Default Tab'

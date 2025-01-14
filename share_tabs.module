@@ -69,12 +69,19 @@ function template_preprocess_share_tabs(&$variables) {
 
     $view_mode = !empty($tab['entity']['view_mode']) ? $tab['entity']['view_mode'] : 'full';
 
+    $content_attributes['data-ajax'] = $tab['ajax'];
+    if ($tab['ajax']) {
+      $content_attributes['data-ajax-params'] = json_encode($tab['entity']);
+      $content_attributes['data-ajax-loaded'] = 0;
+    }
+
+
     $tabs[$key] = [
       'key' => $key,
       'name' => $name,
       'title' => $tab['title'],
       'link_attributes' => $tab_link_attributes,
-      'content' => \Drupal::entityTypeManager()
+      'content' => $tab['ajax'] ? '' : \Drupal::entityTypeManager()
         ->getViewBuilder($tab['entity']['type'])
         ->view($entity, $view_mode),
       'content_attributes' => $content_attributes,

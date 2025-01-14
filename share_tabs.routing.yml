@@ -29,3 +29,14 @@ entity.share_tab.delete_form:
     _title: 'Delete Share Tab'
   requirements:
     _permission: 'administer share tab'
+
+share_tabs.tab_content_loader:
+  path: '/ajax/share-tabs/tab-content'
+  defaults:
+    _controller: '\Drupal\share_tabs\Controller\ShareTabsController::tabContent'
+    _title: 'AJAX Example'
+  requirements:
+    _permission: 'access content'
+    _format: 'json'
+    _method: 'POST'
+

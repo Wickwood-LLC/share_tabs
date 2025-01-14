@@ -5,13 +5,27 @@
     $('.tablink', $share_tabs).removeClass('active-tab');
     $tab.addClass('active-tab');
     $('.tab-content', $share_tabs).hide();
-    $('.tab-content[data-tab-name="' + name + '"]', $share_tabs).show();
+    var $tab_content = $('.tab-content[data-tab-name="' + name + '"]', $share_tabs);
+    $tab_content.show();
     var share_method = $share_tabs.attr('data-share-method');
     var query_param_name = $share_tabs.attr('data-query-param-name');
     if (share_method == 'query_param') {
       const url = new URL(location);
       url.searchParams.set(query_param_name, name);
       history.pushState({}, "", url);
+    }
+    var ajax_load = $tab_content.attr('data-ajax');
+    var ajax_loaded = $tab_content.attr('data-ajax-loaded');
+    if (ajax_load == '1' && ajax_loaded == '0') {
+      Drupal.ajax({
+        url: Drupal.url('ajax/share-tabs/tab-content'),
+        type: 'POST',
+        submit: {
+          entity: JSON.parse($tab_content.attr('data-ajax-params')),
+          tab_content_id: $tab_content.attr('id'),
+        }
+      })
+      .execute();
     }
   }
   Drupal.behaviors.share_tabs = {

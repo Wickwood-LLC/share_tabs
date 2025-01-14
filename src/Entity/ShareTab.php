@@ -3,6 +3,7 @@
 namespace Drupal\share_tabs\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
  * Defines the MyEntity configuration entity.
@@ -108,7 +109,8 @@ class ShareTab extends ConfigEntityBase {
       'name' => [
         'autogenerate' => TRUE,
         'custom' => '',
-      ]
+      ],
+      'ajax' => FALSE,
     ];
   }
 
@@ -139,5 +141,14 @@ class ShareTab extends ConfigEntityBase {
 
   public function getQueryParamterName() {
     return $this->query_param_name;
+  }
+
+  public function preSave(EntityStorageInterface $storage) {
+    parent::preSave($storage);
+
+    foreach ($this->tabs as &$tab) {
+      $tab['title'] = trim($tab['title']);
+      $tab['name']['custom'] = trim($tab['name']['custom']);
+    }
   }
 }
