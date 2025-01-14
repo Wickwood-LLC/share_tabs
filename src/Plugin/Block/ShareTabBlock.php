@@ -3,9 +3,11 @@
 namespace Drupal\share_tabs\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\share_tabs\Entity\ShareTab;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,6 +30,13 @@ class ShareTabBlock extends BlockBase implements ContainerFactoryPluginInterface
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
+
+  /**
+   * Share Tabs entity associated with this block
+   *
+   * @var \Drupal\share_tabs\Entity\ShareTab
+   */
+  protected $share_tab;
 
 
   /**
@@ -101,20 +110,62 @@ class ShareTabBlock extends BlockBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function build() {
-    $share_tab = $this->entityTypeManager->getStorage('share_tab')->load($this->configuration['share_tab']);
-    return [
-      '#theme' => 'share_tabs',
-      '#share_tab' => $share_tab,
-      '#attached' => [
-        'library' => [
-          'share_tabs/share_tabs',
+    if ($share_tab = $this->getShareTab()) {
+      return [
+        '#theme' => 'share_tabs',
+        '#share_tab' => $share_tab,
+        '#attached' => [
+          'library' => [
+            'share_tabs/share_tabs',
+          ],
         ],
-      ],
-    ];
+      ];
+    }
+    return [];
   }
 
+  /**
+   * Get share tab config entity associated with this block.
+   */
+  public function getShareTab(): ShareTab {
+    if (!$this->share_tab) {
+    $this->share_tab = $this->entityTypeManager->getStorage('share_tab')->load($this->configuration['share_tab']);
+    }
+    return $this->share_tab;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getCacheTags()  {
+    $tags = parent::getCacheTags();
+    if ($share_tab = $this->getShareTab()) {
+      $tags += $share_tab->getCacheTags();
+      foreach ($share_tab->getTabs() as $tab) {
+        $tags[] = $tab['entity']['type'] . ':' . $tab['entity']['id'];
+      }
+    }
+
+    return $tags;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function getCacheContexts() {
+    $contexts = parent::getCacheContexts();
+    if ($share_tab = $this->getShareTab()) {
+      if ($share_tab->getShareMethod() == ShareTab::SHARE_METHOD_QUERY) {
+        $contexts[] = 'url.query_args:' . $share_tab->getQueryParamterName();
+      }
+    }
+    return $contexts;
+  }
+
+  /**
+   * @inheritdoc
+   */
   public function getCacheMaxAge() {
-    return 0;
+    return CacheBackendInterface::CACHE_PERMANENT;
   }
-
 }

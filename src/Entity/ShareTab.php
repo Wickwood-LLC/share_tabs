@@ -39,6 +39,9 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "share_method",
  *     "empty_hash",
  *     "query_param_name",
+ *   },
+ *   cache = {
+ *     "tags" = {"share_tab_list", "share_tab:{id}"}
  *   }
  * )
  */
