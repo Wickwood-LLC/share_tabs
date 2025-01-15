@@ -40,7 +40,7 @@
           $tabs = $('.tablink', this).each(function () {
             $tab = $(this);
             var name = $(this).attr('data-tab-name');
-            if (fragment == 'st-' + name) {
+            if (fragment == name) {
               clickShareTab($tab);
             }
           })
