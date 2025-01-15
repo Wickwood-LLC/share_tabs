@@ -104,6 +104,7 @@ function template_preprocess_share_tabs(&$variables) {
         $tab['content_attributes']['style'] = '';
         if (empty($tab['content'])) {
           $tab['content'] = $content = $share_tab->renderTabContent($tab['key']);
+          $tab['content_attributes']['data-ajax-loaded'] = 1;
         }
       }
     }
