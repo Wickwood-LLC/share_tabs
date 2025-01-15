@@ -101,7 +101,8 @@ class ShareTab extends ConfigEntityBase {
     if (!$this->tabs) {
       $this->tabs = [];
     }
-    $this->tabs[time()] = [
+    $key = time();
+    $this->tabs[$key] = [
       'title' => '',
       'weight' => 0,
       'entity' => [
@@ -115,6 +116,10 @@ class ShareTab extends ConfigEntityBase {
       ],
       'ajax' => FALSE,
     ];
+
+    if (count($this->tabs) == 1) {
+      $this->default_tab = $key;
+    }
   }
 
   public function removeTab($key) {
