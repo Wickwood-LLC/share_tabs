@@ -67,7 +67,8 @@ class ShareTabForm extends EntityForm {
     });
 
     $content_entity_types = $this->getContentEntityTypes();
-  
+    $tab_options = [];
+
     foreach ($tabs as $key => $tab) {
       $tab_form = [
         '#type' => 'fieldset',
@@ -173,51 +174,53 @@ class ShareTabForm extends EntityForm {
       '#submit' => [[static::class, 'addTabSubmit']],
     ];
 
-    $group_class = 'tab-order';
-    $form['tab_order'] = [
-      '#type' => 'table',
-      '#caption' => $this->t('Rearrange tabs below to make them get displayed in the order you want.'),
-      '#attributes' => ['id' => 'tab-order'],
-      '#title' => $this->t('Tab Display Order'),
-      '#tabledrag' => [
-        [
-          'action' => 'order',
-          'relationship' => 'sibling',
-          'group' => $group_class,
-        ],
-      ],
-      '#input' => FALSE,
-      '#theme_wrappers' => ['form_element'],
-    ];
-
-    foreach ($tabs as $key => $tab) {
-      $form['tab_order'][$key] = [
-        '#attributes' => ['class' => ['draggable']],
-        '#weight' => $tab['weight'] ?? 0,
-        'label' => [
-          '#markup' => $tab['title']
-        ],
-        'weight' => [
-          '#type' => 'weight',
-          '#title' => $this->t('Weight for @title', ['@title' => $tab['title']]),
-          '#title_display' => 'invisible',
-          '#default_value' => $tab['weight'] ?? 0,
-          '#attributes' => [
-            'class' => [
-              $group_class,
-            ]
+    if (!empty($tabs)) {
+      $group_class = 'tab-order';
+      $form['tab_order'] = [
+        '#type' => 'table',
+        '#caption' => $this->t('Rearrange tabs below to make them get displayed in the order you want.'),
+        '#attributes' => ['id' => 'tab-order'],
+        '#title' => $this->t('Tab Display Order'),
+        '#tabledrag' => [
+          [
+            'action' => 'order',
+            'relationship' => 'sibling',
+            'group' => $group_class,
           ],
-        ]
+        ],
+        '#input' => FALSE,
+        '#theme_wrappers' => ['form_element'],
+      ];
+
+      foreach ($tabs as $key => $tab) {
+        $form['tab_order'][$key] = [
+          '#attributes' => ['class' => ['draggable']],
+          '#weight' => $tab['weight'] ?? 0,
+          'label' => [
+            '#markup' => $tab['title']
+          ],
+          'weight' => [
+            '#type' => 'weight',
+            '#title' => $this->t('Weight for @title', ['@title' => $tab['title']]),
+            '#title_display' => 'invisible',
+            '#default_value' => $tab['weight'] ?? 0,
+            '#attributes' => [
+              'class' => [
+                $group_class,
+              ]
+            ],
+          ]
+        ];
+      }
+
+      $form['default_tab'] = [
+        '#type' => 'radios',
+        '#title' => $this->t('Default Tab'),
+        '#options' => $tab_options,
+        '#default_value' => $share_tab->getDefaultTab(),
+        '#description' => $this->t('Select a tab that to be open by default.'),
       ];
     }
-
-    $form['default_tab'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Default Tab'),
-      '#options' => $tab_options,
-      '#default_value' => $share_tab->getDefaultTab(),
-      '#description' => $this->t('Select a tab that to be open by default.'),
-    ];
 
     $form['share_method'] = [
       '#type' => 'radios',
