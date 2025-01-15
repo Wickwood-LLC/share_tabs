@@ -135,7 +135,7 @@ class ShareTab extends ConfigEntityBase {
   }
 
   public function getShareMethod() {
-    return $this->share_method;
+    return $this->share_method ?? static::SHARE_METHOD_HASH;
   }
 
   public function getEmptyHash() {
