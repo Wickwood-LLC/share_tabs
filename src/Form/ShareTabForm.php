@@ -58,11 +58,6 @@ class ShareTabForm extends EntityForm {
     $tab_number = 1;
     $tabs = $share_tab->getTabs();
 
-    if (empty($tabs)) {
-      $share_tab->addTab();
-      $tabs = $share_tab->getTabs();
-    }
-
     uksort($tabs, function($a, $b) use ($tabs) {
       $tabs[$a]['weight'] = $tabs[$a]['weight'] ?? 0;
       $tabs[$b]['weight'] = $tabs[$b]['weight'] ?? 0;
@@ -168,6 +163,12 @@ class ShareTabForm extends EntityForm {
       $tab_number++;
 
       $tab_options[$key] = $tab['title'];
+    }
+
+    if (empty($tabs)) {
+      $form['tabs']['message'] = [
+        '#markup' => $this->t('Start adding tabs using the "Add Tab" button given below.'),
+      ];
     }
 
     $form['add_tab'] = [
@@ -318,19 +319,24 @@ class ShareTabForm extends EntityForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $tabs = $form_state->getValue('tabs');
-    foreach ($tabs as $key => $tab) {
-      $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
-      $entity = $entity_storage->load($tab['entity']['id']);
-      if (!$entity) {
-        $form_state->setErrorByName('tabs][' . $key . '][entity][id', $this->t('Entity does not exist!'));
-      }
-      if (!$tab['name']['autogenerate']) {
-        $custom_name = trim($tab['name']['custom']);
-        if (empty(trim($custom_name))) {
-          $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Cannot be empty!'));
+    if (empty($tabs)) {
+      $form_state->setErrorByName('tabs', $this->t('At least one tab is required.'));
+    }
+    else {
+      foreach ($tabs as $key => $tab) {
+        $entity_storage = \Drupal::entityTypeManager()->getStorage($tab['entity']['type']);
+        $entity = $entity_storage->load($tab['entity']['id']);
+        if (!$entity) {
+          $form_state->setErrorByName('tabs][' . $key . '][entity][id', $this->t('Entity does not exist!'));
         }
-        else if (!preg_match('/^[\w\-]+$/', $custom_name)) {
-          $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Only alphanumeric characters are allowed!'));
+        if (!$tab['name']['autogenerate']) {
+          $custom_name = trim($tab['name']['custom']);
+          if (empty(trim($custom_name))) {
+            $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Cannot be empty!'));
+          }
+          else if (!preg_match('/^[\w\-]+$/', $custom_name)) {
+            $form_state->setErrorByName('tabs][' . $key . '][name][custom', $this->t('Only alphanumeric characters are allowed!'));
+          }
         }
       }
     }
