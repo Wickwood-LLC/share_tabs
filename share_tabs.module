@@ -45,11 +45,11 @@ function template_preprocess_share_tabs(&$variables) {
     $anchor = $name;
     $tab_link_attributes = new Attribute();
     $tab_link_attributes['class'] = ['tablink'];
-    if ($share_method == ShareTab::SHARE_METHOD_HASH) {
+    if ($share_method == ShareTab::SHARE_METHOD_FRAGMENT) {
       $tab_link_attributes['href'] = '#' . $anchor;
     }
     else {
-      if ($share_tab->getEmptyHash()) {
+      if ($share_tab->getEmptyFragment()) {
         $tab_link_attributes['href'] = '#';
       }
     }

@@ -33,14 +33,14 @@
   Drupal.behaviors.share_tabs = {
 
     attach: function (context, settings) {
-      var hash = window.top.location.hash.substring(1);
+      var fragment = window.top.location.hash.substring(1);
       var $share_tabs = $('.share-tabs').each(function (){
         var share_method = $(this).attr('data-share-method');
-        if (share_method == 'hash') {
+        if (share_method == 'fragment') {
           $tabs = $('.tablink', this).each(function () {
             $tab = $(this);
             var name = $(this).attr('data-tab-name');
-            if (hash == 'st-' + name) {
+            if (fragment == 'st-' + name) {
               clickShareTab($tab);
             }
           })

@@ -55,9 +55,9 @@ share_tabs.share_tab:
     share_method:
       type: string
       label: 'Share Method'
-    empty_hash:
+    empty_fragment:
       type: boolean
-      label: 'Empty Hash'
+      label: 'Empty Fragment'
     query_param_name:
       type: string
       label: 'Query Parameter Name'

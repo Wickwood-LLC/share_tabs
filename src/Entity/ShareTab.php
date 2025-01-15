@@ -37,7 +37,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "tabs",
  *     "default_tab",
  *     "share_method",
- *     "empty_hash",
+ *     "empty_fragment",
  *     "query_param_name",
  *   },
  *   cache = {
@@ -46,7 +46,7 @@ use Drupal\Core\Entity\EntityStorageInterface;
  * )
  */
 class ShareTab extends ConfigEntityBase {
-  const SHARE_METHOD_HASH = 'hash';
+  const SHARE_METHOD_FRAGMENT = 'fragment';
   const SHARE_METHOD_QUERY = 'query_param';
   /**
    * The unique ID of the entity.
@@ -84,11 +84,11 @@ class ShareTab extends ConfigEntityBase {
   protected $share_method;
   
   /**
-   * Empty hash
+   * Empty fragment
    *
    * @var boolean
    */
-  protected $empty_hash = FALSE;
+  protected $empty_fragment = FALSE;
 
   /**
    * Query parameter name
@@ -140,11 +140,11 @@ class ShareTab extends ConfigEntityBase {
   }
 
   public function getShareMethod() {
-    return $this->share_method ?? static::SHARE_METHOD_HASH;
+    return $this->share_method ?? static::SHARE_METHOD_FRAGMENT;
   }
 
-  public function getEmptyHash() {
-    return $this->empty_hash;
+  public function getEmptyFragment() {
+    return $this->empty_fragment;
   }
 
   public function getQueryParamterName() {
