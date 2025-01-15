@@ -42,7 +42,7 @@ function template_preprocess_share_tabs(&$variables) {
       $name = $tab['name']['custom'];
     }
 
-    $anchor = 'st-' . $name;
+    $anchor = $name;
     $tab_link_attributes = new Attribute();
     $tab_link_attributes['class'] = ['tablink'];
     if ($share_method == ShareTab::SHARE_METHOD_HASH) {
@@ -65,7 +65,7 @@ function template_preprocess_share_tabs(&$variables) {
 
     $content_attributes = new Attribute();
     $content_attributes['class'] = ['tab-content'];
-    $content_attributes['id'] = $anchor;
+    $content_attributes['id'] = 'st-' . $anchor;
     $content_attributes['data-tab-key'] = $key;
     $content_attributes['data-tab-name'] = $name;
 
