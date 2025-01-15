@@ -162,7 +162,7 @@ class ShareTabForm extends EntityForm {
 
       $tab_number++;
 
-      $tab_options[$key] = $tab['title'];
+      $tab_options[$key] = empty($tab['title'])? $tab_form['#title'] : $tab['title'];
     }
 
     if (empty($tabs)) {
@@ -206,11 +206,11 @@ class ShareTabForm extends EntityForm {
           '#attributes' => ['class' => ['draggable']],
           '#weight' => $tab['weight'] ?? 0,
           'label' => [
-            '#markup' => $tab['title']
+            '#markup' => $tab_options[$key]
           ],
           'weight' => [
             '#type' => 'weight',
-            '#title' => $this->t('Weight for @title', ['@title' => $tab['title']]),
+            '#title' => $this->t('Weight for @title', ['@title' => $tab_options[$key]]),
             '#title_display' => 'invisible',
             '#default_value' => $tab['weight'] ?? 0,
             '#attributes' => [
