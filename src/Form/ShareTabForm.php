@@ -57,6 +57,12 @@ class ShareTabForm extends EntityForm {
 
     $tab_number = 1;
     $tabs = $share_tab->getTabs();
+
+    if (empty($tabs)) {
+      $share_tab->addTab();
+      $tabs = $share_tab->getTabs();
+    }
+
     uksort($tabs, function($a, $b) use ($tabs) {
       $tabs[$a]['weight'] = $tabs[$a]['weight'] ?? 0;
       $tabs[$b]['weight'] = $tabs[$b]['weight'] ?? 0;
@@ -142,18 +148,20 @@ class ShareTabForm extends EntityForm {
         '#description' => $this->t('The tab content will not be loaded until becoming the active tab.'),
       ];
 
-      $tab_form['remove'] = [
-        '#type' => 'submit',
-        '#value' => $this->t('Remove'),
-        '#name' => 'remove_role_' . $key,
-        '#limit_validation_errors' => [['tabs',]],
-        '#submit' => [[static::class, 'removeTabSubmit']],
-        '#ajax' => [
-          'callback' => '::removeTabCallback',
-          'wrapper' => $form['#attributes']['id'],
-          'effect' => 'fade',
-        ],
-      ];
+      if (count($tabs) > 1) {
+        $tab_form['remove'] = [
+          '#type' => 'submit',
+          '#value' => $this->t('Remove'),
+          '#name' => 'remove_role_' . $key,
+          '#limit_validation_errors' => [['tabs',]],
+          '#submit' => [[static::class, 'removeTabSubmit']],
+          '#ajax' => [
+            'callback' => '::removeTabCallback',
+            'wrapper' => $form['#attributes']['id'],
+            'effect' => 'fade',
+          ],
+        ];
+      }
 
       $form['tabs'][$key] = $tab_form;
 
