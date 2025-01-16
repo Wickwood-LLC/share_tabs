@@ -29,6 +29,7 @@
       })
       .execute();
     }
+    $tab.trigger("shareTabClicked", {tabName: name});
   }
   Drupal.behaviors.share_tabs = {
 
