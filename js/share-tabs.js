@@ -14,6 +14,12 @@
       url.searchParams.set(query_param_name, name);
       history.pushState({}, "", url);
     }
+    else if (share_method == 'fragment') {
+      // This not required normal as fragment in the URL will be auto upated after the click operation.
+      // But that will happen only after the event execution completed.
+      // We want fragment updated sooner to make it available for subscribers of shareTabClicked event.
+      window.location.href = $tab.attr('href');
+    }
     var ajax_load = $tab_content.attr('data-ajax');
     var ajax_loaded = $tab_content.attr('data-ajax-loaded');
     if (ajax_load == '1' && ajax_loaded == '0') {
