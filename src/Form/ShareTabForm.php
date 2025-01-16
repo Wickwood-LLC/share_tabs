@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\share_tabs\Entity\ShareTab;
 
 /**
@@ -92,6 +93,10 @@ class ShareTabForm extends EntityForm {
         '#default_value' => $tab['name']['autogenerate'],
         '#description' => $this->t('Autogenerate a name for this tab using the title set above. Name will be used to identify the tab in URLs.'),
       ];
+      $module_handler = \Drupal::service('module_handler');
+      if ($module_handler->moduleExists('pathauto')) {
+        $tab_form['name']['autogenerate']['#description'] .= $this->t(' A clean up will be performed as per the "Punctuation" settings at the <a href=":settings">Pathauto Settings page</a>.', [':settings' => Url::fromRoute('pathauto.settings.form')->toString()]);
+      }
 
       $tab_form['name']['custom'] = [
         '#type' => 'textfield',

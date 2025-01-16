@@ -36,7 +36,13 @@ function template_preprocess_share_tabs(&$variables) {
     }
 
     if ($tab['name']['autogenerate']) {
-      $name = preg_replace('/[^a-zA-Z0-9\']/', '_', $tab['title']);
+      $module_handler = \Drupal::service('module_handler');
+      if ($module_handler->moduleExists('pathauto')) {
+        $name = \Drupal::service('pathauto.alias_cleaner')->cleanString($tab['title']);
+      }
+      else {
+        $name = preg_replace('/[^a-zA-Z0-9\']/', '-', $tab['title']);
+      }
     }
     else {
       $name = $tab['name']['custom'];
