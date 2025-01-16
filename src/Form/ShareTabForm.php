@@ -239,7 +239,7 @@ class ShareTabForm extends EntityForm {
         ShareTab::SHARE_METHOD_QUERY => 'Query Parameter',
       ],
       '#default_value' => $share_tab->getShareMethod(),
-      '#description' => $this->t('Select a way to set the share method. This decides how infomation about the active tab appear in the URL. `Fragment` will causet to make URL like [url]+#[tab-key].  `Query Param` will add a URL query parameter.'),
+      '#description' => $this->t('Select a way to set the share method. This decides how infomation about the active tab appear in the URL. `Fragment` will causet to make URL like [url]+#[tab-name].  `Query Param` will add a URL query parameter.'),
     ];
 
     $form['empty_fragment'] = [

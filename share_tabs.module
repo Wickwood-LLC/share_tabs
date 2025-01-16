@@ -59,14 +59,12 @@ function template_preprocess_share_tabs(&$variables) {
       $active_tab_set = TRUE;
     }
 
-    $tab_link_attributes['data-tab-key'] = $key;
     $tab_link_attributes['data-tab-name'] = $name;
     $tab_link_attributes['role'] = 'button';
 
     $content_attributes = new Attribute();
     $content_attributes['class'] = ['tab-content'];
     $content_attributes['id'] = 'st-' . $anchor;
-    $content_attributes['data-tab-key'] = $key;
     $content_attributes['data-tab-name'] = $name;
 
     $content = NULL;
