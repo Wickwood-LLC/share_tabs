@@ -121,3 +121,18 @@ function template_preprocess_share_tabs(&$variables) {
   $variables['tabs'] = $tabs;
   $variables['attributes'] = $attributes;
 }
+
+/**
+ * Implements hook_block_view_alter().
+ *
+ * Alters the render array of specific blocks.
+ */
+function share_tabs_block_view_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+  // Get the block ID.
+  $block_id = $block->getPluginId();
+
+  // Check for a social sharing block.
+  if ($block_id === 'social_sharing_block') {
+    $build['#attached']['library'][] = 'share_tabs/dynamic_social_media_links';
+  }
+}

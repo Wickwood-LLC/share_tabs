@@ -8,3 +8,11 @@ share_tabs:
   dependencies:
     - core/drupal.ajax
   footer: true
+
+dynamic_social_media_links:
+  version: 1.0
+  js:
+    js/dynamic-social-media-links.js: {}
+  dependencies:
+    - core/jquery
+  footer: true
