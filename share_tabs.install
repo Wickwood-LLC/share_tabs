@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_install()
+ */
+function share_tabs_install() {
+  $module_handler = \Drupal::service('module_handler');
+  if ($module_handler->moduleExists('social_media')) {
+    $social_media_settings = \Drupal::configFactory()->getEditable('social_media.settings');
+    foreach ($social_media_settings->get('social_media') as $social_media_id => $settings) {
+      $settings['api_url'] = str_replace('[current-page:url]', '[current-page:url-dynamic]', $settings['api_url']);
+      $social_media_settings->set('social_media.' . $social_media_id, $settings);
+    }
+    $social_media_settings->save();
+  }
+}
